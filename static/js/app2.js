@@ -10,29 +10,31 @@
 
 // Get a reference to the table body, button, form
 var tbody = d3.select("tbody");
-var form = d3.select("#datetime");
+var formDate = d3.select("#datetime");
 var button = d3.select("#filter-btn");
 
+var buttonCity = d3.select("#city-btn").on("click", startFiltering);
+
 // utilize the event (pressing enter) to activate the filtering process
-form.on("submit", startFiltering);
+formDate.on("submit", startFiltering);   //{if(d3.event.keyCode === 32)});
 button.on("click", startFiltering);
 
 // create a function which appends the data from the data.js file to the website
 function startFiltering(){
     d3.event.preventDefault();
-
     // console.log("test")
-
+    tbody.html("");
     // get the data from the form for the filter
     var getTheDate = d3.select("#datetime").property("value");
-    console.log(getTheDate)
+    var getTheCity = d3.select("#city").property("value");
 
     // attach the filter to the date
-    var dateFilter = data.filter(dates =>
-    dates.datetime === getTheDate);
+    var allFilters = data.filter(dates => dates.datetime === getTheDate)
+    .filter(cities => dates.city === getTheCity);
+
 
     // run a forEach loop to go through each value in the dataset
-    dateFilter.forEach(function(ufoSighting) {
+    allFilters.forEach(function(ufoSighting) {
         // console.log(ufoSighting);
         var row = tbody.append("tr");
         Object.values(ufoSighting).forEach((value) => {
