@@ -10,26 +10,38 @@
 
 // Get a reference to the table body, button, form
 var tbody = d3.select("tbody");
-var form = d3.select("#datetime");
+var dateForm = d3.select("#datetimeform");
 var button = d3.select("#filter-btn");
 
 // utilize the event (pressing enter) to activate the filtering process
-form.on("submit", startFiltering);
+dateForm.on("submit", startFiltering);
 button.on("click", startFiltering);
+
+// function for testing value comes from https://www.w3resource.com/javascript/form/non-empty-field.php
+let dateFilter = function dateTest(date){
+    if (inputtx.value.length == 0)
+     { 
+        alert("No Date");  	
+        return true; 
+     }  	
+     return date; 
+   } 
 
 // create a function which appends the data from the data.js file to the website
 function startFiltering(){
     d3.event.preventDefault();
 
     // console.log("test")
-
+    tbody.html("");
     // get the data from the form for the filter
     var getTheDate = d3.select("#datetime").property("value");
-    console.log(getTheDate)
+    var getTheCity = d3.select("#city").property("value");
 
     // attach the filter to the date
-    var dateFilter = data.filter(dates =>
-    dates.datetime === getTheDate);
+    var dateFilter = data
+                    .filter(dates => dates.datetime === dateFilter);
+
+                    //.filter(cities => cities.city === getTheCity);
 
     // run a forEach loop to go through each value in the dataset
     dateFilter.forEach(function(ufoSighting) {
