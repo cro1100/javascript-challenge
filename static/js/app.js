@@ -17,15 +17,6 @@ var button = d3.select("#filter-btn");
 dateForm.on("submit", startFiltering);
 button.on("click", startFiltering);
 
-// function for testing value comes from https://www.w3resource.com/javascript/form/non-empty-field.php
-let dateFilter = function dateTest(date){
-    if (inputtx.value.length == 0)
-     { 
-        alert("No Date");  	
-        return true; 
-     }  	
-     return date; 
-   } 
 
 // create a function which appends the data from the data.js file to the website
 function startFiltering(){
@@ -34,18 +25,41 @@ function startFiltering(){
     // console.log("test")
     tbody.html("");
     // get the data from the form for the filter
-    var getTheDate = d3.select("#datetime").property("value");
-    var getTheCity = d3.select("#city").property("value");
+    let getTheDate = d3.select("#datetime").property("value");
+    let getTheCity = d3.select("#city").property("value");
+    let getTheState = d3.select("#state").property("value");
+    let getTheCountry = d3.select("#country").property("value");
+    let getTheShape = d3.select("#shape").property("value");
+    
+    //create the dateFilter  variables; i had some help from askbcs asst here
+    let dateFilter = data;
 
-    // attach the filter to the date
-    var dateFilter = data
-                    .filter(dates => dates.datetime === dateFilter);
+    // use if statements to handle blank forms
+    // then attach the filters to the date
+    if (getTheDate != "") {
+        dateFilter = data.filter(dates => dates.datetime === getTheDate)
+    }
+    else {dataFilter = data};
 
-                    //.filter(cities => cities.city === getTheCity);
+    if (getTheCity != "") {
+        dateFilter = dateFilter.filter(cities => cities.city === getTheCity)
+    };
+
+    if (getTheState != "") {
+        dateFilter = dateFilter.filter(states => states.state === getTheState)
+    };
+
+    if (getTheCountry != "") {
+        dateFilter = dateFilter.filter(countries => countries.country === getTheCountry)
+    };
+
+    if (getTheShape != "") {
+        dateFilter = dateFilter.filter(shapes => shapes.shape === getTheShape)
+    };
 
     // run a forEach loop to go through each value in the dataset
     dateFilter.forEach(function(ufoSighting) {
-        // console.log(ufoSighting);
+        // append the data to the table
         var row = tbody.append("tr");
         Object.values(ufoSighting).forEach((value) => {
             var cell = row.append("td");
@@ -55,5 +69,3 @@ function startFiltering(){
 };
 
 
-
-   
